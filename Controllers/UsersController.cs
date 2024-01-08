@@ -1,4 +1,5 @@
-﻿using DotNetCardsServer.Models.MockData;
+﻿using DotNetCardsServer.Exceptions;
+using DotNetCardsServer.Models.MockData;
 using DotNetCardsServer.Models.Users;
 using DotNetCardsServer.Services.Users;
 using DotNetCardsServer.Utils;
@@ -45,7 +46,21 @@ namespace DotNetCardsServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] User newUser)
         {
+            if (ModelState.IsValid)
+            {
+                return BadRequest("validation");
+            }
+
+            try
+            {
           await  _usersService.CreateUserAsync(newUser);
+
+            }
+            catch (UserAlreadyExistsException ex)
+            {
+                return Conflict(ex.Message);
+            }
+           
             
             return CreatedAtAction(nameof(Get),new{Id=newUser.Id},newUser);
         }
