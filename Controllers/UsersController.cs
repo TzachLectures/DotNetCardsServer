@@ -25,35 +25,40 @@ namespace DotNetCardsServer.Controllers
 
         // GET: api/<UsersController>
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(MockUsers.UserList);
+            List<User> users =await _usersService.GetUsersAsync();
+            return Ok(users);
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            User? u = MockUsers.UserList.FirstOrDefault(user => user.Id.ToString() == id);
-            if(u == null)
+            try
             {
-                return NotFound();
-            }
+            User? u = await _usersService.GetOneUserAsync(id);
             return Ok(u);
+            }
+            catch(UserNotFoundException e)
+            {
+            return NotFound(e.Message);
+            }
+           
         }
 
         // POST api/<UsersController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] User newUser)
         {
-            if (ModelState.IsValid)
-            {
-                return BadRequest("validation");
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    return BadRequest("validation");
+            //}
 
             try
             {
-          await  _usersService.CreateUserAsync(newUser);
+              await  _usersService.CreateUserAsync(newUser);
 
             }
             catch (UserAlreadyExistsException ex)
@@ -67,42 +72,48 @@ namespace DotNetCardsServer.Controllers
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(string id, [FromBody] User updatedUser)
+        public async Task<IActionResult> Put(string id, [FromBody] User updatedUser)
         {
-            int index = MockUsers.UserList.FindIndex(user => user.Id.ToString() == id);
-            if (index ==-1)
+            try
             {
-                return NotFound();
+            User newUser = await _usersService.EditUserAsync(id, updatedUser);
             }
-
-            MockUsers.UserList[index]= ObjectHelpers.DeepCopy(updatedUser);
-
+            catch(UserNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
             return NoContent();
         }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            User? u = MockUsers.UserList.FirstOrDefault(user => user.Id.ToString() == id);
-            if (u == null)
+            try
             {
-                return NotFound();
+                await _usersService.DeleteUserAsync(id);
             }
-
-            MockUsers.UserList.Remove(u);
-
+            catch (UserNotFoundException e)
+            {
+                return NotFound(e.Message);
+            }
+          
             return NoContent();
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginModel loginModel)
+        public async Task<IActionResult>  Login([FromBody] LoginModel loginModel)
         {
-            User? u = MockUsers.UserList.FirstOrDefault(user => user.Email == loginModel.Email && user.Password==loginModel.Password);
-            if (u == null)
+            try
+            {
+            User? u = await _usersService.LoginAsync(loginModel);
+            }
+            catch(AuthenticationException ex)
             {
                 return Unauthorized("Email or Password wrong");
+
             }
+            
             return Ok("login token");
         }
     }

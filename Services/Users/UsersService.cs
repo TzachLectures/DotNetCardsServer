@@ -55,6 +55,7 @@ namespace DotNetCardsServer.Services.Users
         {
             // Implement logic to delete a user from the MongoDB collection based on userId
            var result = await _users.DeleteOneAsync(u => u.Id.ToString() == userId);
+
             if (result.DeletedCount == 0)
             {
                 //exception user not found

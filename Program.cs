@@ -1,4 +1,5 @@
 
+using DotNetCardsServer.Middlewares;
 using DotNetCardsServer.Services.Data;
 
 namespace DotNetCardsServer
@@ -21,6 +22,14 @@ namespace DotNetCardsServer
                 return MongoDbService.CreateMongoClient(configuration);
             });
 
+            builder.Services.AddCors(options =>{
+                options.AddPolicy("myCorsPolicy", policy =>
+                {
+                    policy.WithOrigins("http://www.someurl.com", "http://127.0.0.1:5500")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
 
             var app = builder.Build();
 
@@ -30,11 +39,13 @@ namespace DotNetCardsServer
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            
+            app.UseCors("myCorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ReqResLoggerMiddleware>();
 
             app.MapControllers();
 
