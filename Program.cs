@@ -1,6 +1,7 @@
 
 using DotNetCardsServer.Middlewares;
 using DotNetCardsServer.Services.Data;
+using DotNetCardsServer.Utils;
 
 namespace DotNetCardsServer
 {
@@ -8,6 +9,7 @@ namespace DotNetCardsServer
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.

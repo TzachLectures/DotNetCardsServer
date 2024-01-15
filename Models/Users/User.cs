@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 
 namespace DotNetCardsServer.Models.Users
 {
@@ -6,8 +7,11 @@ namespace DotNetCardsServer.Models.Users
     {
         public ObjectId Id { get; set; }
         public Name Name { get; set; }
+
         public string Email { get; set; }
+
         public string Password { get; set; }
+
         public string Phone { get; set; }
         public Image Image { get; set; }
         public Address Address { get; set; }

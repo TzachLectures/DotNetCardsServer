@@ -58,7 +58,8 @@ namespace DotNetCardsServer.Controllers
 
             try
             {
-              await  _usersService.CreateUserAsync(newUser);
+              object DTOuser = await  _usersService.CreateUserAsync(newUser);
+              return CreatedAtAction(nameof(Get),new{Id=newUser.Id}, DTOuser);
 
             }
             catch (UserAlreadyExistsException ex)
@@ -67,7 +68,6 @@ namespace DotNetCardsServer.Controllers
             }
            
             
-            return CreatedAtAction(nameof(Get),new{Id=newUser.Id},newUser);
         }
 
         // PUT api/<UsersController>/5
