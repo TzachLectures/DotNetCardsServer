@@ -1,4 +1,5 @@
-﻿using DotNetCardsServer.Exceptions;
+﻿using DotNetCardsServer.Auth;
+using DotNetCardsServer.Exceptions;
 using DotNetCardsServer.Models.MockData;
 using DotNetCardsServer.Models.Users;
 using DotNetCardsServer.Services.Users;
@@ -27,6 +28,7 @@ namespace DotNetCardsServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            Console.WriteLine(HttpContext.User.FindFirst("id").Value);
             List<User> users =await _usersService.GetUsersAsync();
             return Ok(users);
         }
@@ -107,14 +109,17 @@ namespace DotNetCardsServer.Controllers
             try
             {
             User? u = await _usersService.LoginAsync(loginModel);
+            string token = JwtHelper.GenerateAuthToken(u);
+            return Ok(token);
+
             }
-            catch(AuthenticationException ex)
+            catch (AuthenticationException ex)
             {
                 return Unauthorized("Email or Password wrong");
 
             }
-            
-            return Ok("login token");
+
+
         }
     }
 }
