@@ -30,7 +30,6 @@ namespace DotNetCardsServer.Models.Cards
         public Image Image { get; set; }
         public Address Address { get; set; }
 
-        [Required, Range(1000000, 9999999)]
         public int BizNumber { get; set; }
 
         public List<string> Likes { get; set; } = new List<string>();

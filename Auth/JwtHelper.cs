@@ -18,6 +18,7 @@ namespace DotNetCardsServer.Auth
             Claim[] claims = new Claim[]
             {
                 new Claim("id",user.Id.ToString()),
+                 new Claim("_id",user.Id.ToString()),
                 new Claim("isAdmin",user.IsAdmin.ToString()),
                 new Claim("isBusiness",user.IsBusiness.ToString()),
                 new Claim("first",user.Name.First.ToString()),

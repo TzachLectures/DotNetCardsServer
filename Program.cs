@@ -31,7 +31,7 @@ namespace DotNetCardsServer
             builder.Services.AddCors(options =>{
                 options.AddPolicy("myCorsPolicy", policy =>
                 {
-                    policy.WithOrigins("http://www.someurl.com", "http://127.0.0.1:5500")
+                    policy.WithOrigins("http://localhost:3000", "http://127.0.0.1:5500")
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 });
