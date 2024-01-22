@@ -19,8 +19,9 @@ namespace DotNetCardsServer.Auth
             {
                 new Claim("id",user.Id.ToString()),
                 new Claim("isAdmin",user.IsAdmin.ToString()),
-                new Claim("isBusiness",user.IsBussines.ToString()),
+                new Claim("isBusiness",user.IsBusiness.ToString()),
                 new Claim("first",user.Name.First.ToString()),
+                new Claim ("role",user.IsAdmin ? "Admin":user.IsBusiness ? "Business":"User")
             };
 
             JwtSecurityToken token = new JwtSecurityToken(

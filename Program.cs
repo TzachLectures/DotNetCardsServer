@@ -40,6 +40,7 @@ namespace DotNetCardsServer
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                             .AddJwtBearer(options =>
                             {
+
                                 options.TokenValidationParameters = new TokenValidationParameters
                                 {
                                     ValidateIssuer = true,
@@ -52,7 +53,14 @@ namespace DotNetCardsServer
                                 };
                             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MustBeAdmin", policy => policy.RequireClaim("role", "Admin"));  
+                options.AddPolicy("MustBeBusinessOrAdmin", policy => policy.RequireClaim("role", "Business","Admin"));
 
+            });
+
+           
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -65,10 +73,10 @@ namespace DotNetCardsServer
             app.UseCors("myCorsPolicy");
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<ReqResLoggerMiddleware>();
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<ReqResLoggerMiddleware>();
 
             app.MapControllers();
 

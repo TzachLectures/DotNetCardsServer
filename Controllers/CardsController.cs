@@ -1,14 +1,17 @@
 ﻿using DotNetCardsServer.Models.Cards;
 using DotNetCardsServer.Services.Cards;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace DotNetCardsServer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CardsController : ControllerBase
     {
         private readonly CardsService _cardsService;
@@ -19,6 +22,7 @@ namespace DotNetCardsServer.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllCards()
         {
             List<Card> cards = await _cardsService.GetAllCardsAsync();
@@ -26,6 +30,7 @@ namespace DotNetCardsServer.Controllers
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCard(string id)
         {
             try
@@ -40,6 +45,7 @@ namespace DotNetCardsServer.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "MustBeBusinessOrAdmin")]
         public async Task<IActionResult> CreateCard([FromBody] Card newCard)
         {
             if (!ModelState.IsValid)
@@ -54,6 +60,12 @@ namespace DotNetCardsServer.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCard(string id, [FromBody] Card updatedCard)
         {
+            bool.TryParse(HttpContext.User.FindFirstValue("isAdmin"), out bool isAdmin);
+            if (!await _cardsService.IsOwner(id, HttpContext.User.FindFirstValue("id") ?? "") && !isAdmin)
+            {
+                return Unauthorized("You can only edit your own cards");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -72,6 +84,11 @@ namespace DotNetCardsServer.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCard(string id)
         {
+            bool.TryParse(HttpContext.User.FindFirstValue("isAdmin"), out bool isAdmin);
+            if (!await _cardsService.IsOwner(id, HttpContext.User.FindFirstValue("id") ?? "") && !isAdmin)
+            {
+                return Unauthorized("You can only delete your own cards");
+            }
             try
             {
                 await _cardsService.DeleteCardAsync(id);

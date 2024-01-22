@@ -13,7 +13,7 @@ namespace DotNetCardsServer.Models.Users
         public Image Image { get; set; }
         public Address Address { get; set; }
         public bool IsAdmin { get; set; } = false;
-        public bool IsBussines { get; set; } = false;
+        public bool IsBusiness { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

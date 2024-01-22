@@ -77,7 +77,7 @@ namespace DotNetCardsServer.Services.Users
                 .Set(u => u.Email, updatedUser.Email)
                 .Set(u => u.Address, updatedUser.Address)
                 .Set(u => u.Phone, updatedUser.Phone)
-                .Set(u => u.IsBussines, updatedUser.IsBussines)
+                .Set(u => u.IsBusiness, updatedUser.IsBusiness)
                 .Set(u => u.IsAdmin, updatedUser.IsAdmin)
                 .Set(u => u.Image, updatedUser.Image);
 

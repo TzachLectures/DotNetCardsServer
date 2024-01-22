@@ -82,5 +82,10 @@ namespace DotNetCardsServer.Services.Cards
                 throw new Exception("Card not found"); 
             }
         }
+        public async Task<bool> IsOwner(string cardId, string userId)
+        {
+            Card specificCard = await GetCardByIdAsync(cardId);
+            return specificCard.User_Id == userId;
+        }
     }
 }
