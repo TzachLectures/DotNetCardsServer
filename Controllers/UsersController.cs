@@ -63,10 +63,10 @@ namespace DotNetCardsServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] User newUser)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    return BadRequest("validation");
-            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             try
             {
@@ -91,6 +91,10 @@ namespace DotNetCardsServer.Controllers
             if (!isAdmin && !isMyId)
             {
                 return Unauthorized("You can watch only your own profile");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             try
@@ -130,6 +134,11 @@ namespace DotNetCardsServer.Controllers
         [HttpPost("login")]
         public async Task<IActionResult>  Login([FromBody] LoginModel loginModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
             User? u = await _usersService.LoginAsync(loginModel);
