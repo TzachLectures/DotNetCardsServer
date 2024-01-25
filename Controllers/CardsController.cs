@@ -48,6 +48,8 @@ namespace DotNetCardsServer.Controllers
         [Authorize(Policy = "MustBeBusinessOrAdmin")]
         public async Task<IActionResult> CreateCard([FromBody] Card newCard)
         {
+            var claims = HttpContext.User.Claims;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -100,16 +102,19 @@ namespace DotNetCardsServer.Controllers
             }
         }
 
-        [HttpGet("my-cards/{userId}")]
-        public async Task<IActionResult> GetMyCards(string userId)
+        [HttpGet("my-cards")]
+        public async Task<IActionResult> GetMyCards()
         {
+            string userId = HttpContext.User.FindFirstValue("Id") ?? "";
             List<Card> cards = await _cardsService.GetMyCardsAsync(userId);
             return Ok(cards);
         }
 
-        [HttpPatch("{cardId}/like/{userId}")]
-        public async Task<IActionResult> LikeCard(string cardId, string userId)
+        [HttpPatch("{cardId}")]
+        public async Task<IActionResult> LikeCard(string cardId)
         {
+            string userId = HttpContext.User.FindFirstValue("Id") ?? "";
+
             try
             {
                 await _cardsService.LikeCardAsync(cardId, userId);
