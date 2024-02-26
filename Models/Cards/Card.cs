@@ -43,5 +43,37 @@ namespace DotNetCardsServer.Models.Cards
 
         [JsonPropertyName("user_id")]
         public string User_Id { get; set; }
+
+        public Card() { }
+
+        public Card(CardSqlModel cardSqlModel, List<string> likes = null)
+        {
+            Id = new ObjectId(cardSqlModel.Id);
+            Title = cardSqlModel.Title;
+            Subtitle = cardSqlModel.Subtitle;
+            Description = cardSqlModel.Description;
+            Phone = cardSqlModel.Phone;
+            Email = cardSqlModel.Email;
+            Web = cardSqlModel.Web;
+            Image = new Image
+            {
+                Url = cardSqlModel.ImageUrl,
+                Alt = cardSqlModel.ImageAlt
+            };
+            Address = new Address
+            {
+                State = cardSqlModel.State,
+                Country = cardSqlModel.Country,
+                City = cardSqlModel.City,
+                Street = cardSqlModel.Street,
+                HouseNumber = cardSqlModel.HouseNumber,
+                Zip = cardSqlModel.Zip
+            };
+            BizNumber = cardSqlModel.BizNumber;
+            CreateAt = cardSqlModel.CreateAt;
+            User_Id = cardSqlModel.User_Id;
+            // Assuming Likes is a collection of User IDs in Card and UserCardLike entities have a UserId property
+            Likes = likes ?? new List<string>();
+        }
     }
 }

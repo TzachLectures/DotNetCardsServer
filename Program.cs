@@ -68,7 +68,7 @@ namespace DotNetCardsServer
             });
 
             builder.Services.AddScoped<ICardsService, CardsServiceMongoDb>();
-            builder.Services.AddScoped<IUsersService, UsersServiceMongoDb>();
+            builder.Services.AddScoped<IUsersService, UsersServiceEF>();
 
             var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using DotNetCardsServer.Models.Users;
+﻿using DotNetCardsServer.Models.Cards;
+using DotNetCardsServer.Models.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -34,4 +35,30 @@ public class CardSqlModel
     [ForeignKey("User")]
    public string User_Id { get; set; }
     public UserSqlModel User { get; set; }
+
+    public CardSqlModel() { }
+
+
+    public CardSqlModel(Card card)
+    {
+        Id = card.Id.ToString();
+        Title = card.Title;
+        Subtitle = card.Subtitle;
+        Description = card.Description;
+        Phone = card.Phone;
+        Email = card.Email;
+        Web = card.Web;
+        ImageUrl = card.Image?.Url;
+        ImageAlt = card.Image?.Alt;
+        State = card.Address?.State;
+        Country = card.Address?.Country;
+        City = card.Address?.City;
+        Street = card.Address?.Street;
+        HouseNumber = card.Address?.HouseNumber ?? 0; // Default to 0 if null
+        Zip = card.Address?.Zip ?? 0; // Default to 0 if null
+        BizNumber = card.BizNumber;
+        CreateAt = card.CreateAt;
+        User_Id = card.User_Id;
+
+    }
 }

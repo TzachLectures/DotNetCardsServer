@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DotNetCardsServer.Models.Users;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 public class UserSqlModel
@@ -22,4 +23,29 @@ public class UserSqlModel
     public bool IsAdmin { get; set; } = false;
     public bool IsBusiness { get; set; } = false;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    public UserSqlModel() { }
+
+
+    public UserSqlModel(User user)
+    {
+        Id = user.Id.ToString();
+        FirstName = user.Name?.First;
+        LastName = user.Name?.Last;
+        MiddleName = user.Name?.Middle;
+        Email = user.Email;
+        Password = user.Password;
+        Phone = user.Phone;
+        ImageUrl = user.Image?.Url;
+        ImageAlt = user.Image?.Alt;
+        State = user.Address?.State;
+        Country = user.Address?.Country;
+        City = user.Address?.City;
+        Street = user.Address?.Street;
+        HouseNumber = user.Address?.HouseNumber ?? 0; // Assuming HouseNumber is a non-nullable int
+        Zip = user.Address?.Zip ?? 0; // Assuming Zip is a non-nullable int
+        IsAdmin = user.IsAdmin;
+        IsBusiness = user.IsBusiness;
+        CreatedAt = user.CreatedAt;
+    }
 }
