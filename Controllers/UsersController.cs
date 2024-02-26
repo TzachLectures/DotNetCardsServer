@@ -1,5 +1,6 @@
 ﻿using DotNetCardsServer.Auth;
 using DotNetCardsServer.Exceptions;
+using DotNetCardsServer.Interfaces;
 using DotNetCardsServer.Models.Users;
 using DotNetCardsServer.Services.Users;
 using DotNetCardsServer.Utils;
@@ -18,11 +19,11 @@ namespace DotNetCardsServer.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private UsersService _usersService;
+        private IUsersService _usersService;
 
-        public UsersController(IMongoClient mongoClient)
+        public UsersController(IUsersService usersService)
         {
-            _usersService = new UsersService(mongoClient);
+            _usersService = usersService;
         }
 
         // GET: api/<UsersController>

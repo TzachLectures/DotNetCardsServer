@@ -1,14 +1,15 @@
-﻿using DotNetCardsServer.Models.Cards;
+﻿using DotNetCardsServer.Interfaces;
+using DotNetCardsServer.Models.Cards;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DotNetCardsServer.Services.Cards
 {
-    public class CardsService
+    public class CardsServiceMongoDb :ICardsService
     {
         private readonly IMongoCollection<Card> _cards;
 
-        public CardsService(IMongoClient mongoClient)
+        public CardsServiceMongoDb(IMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase("dotnet_business_card_app");
             _cards = database.GetCollection<Card>("cards");

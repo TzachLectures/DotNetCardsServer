@@ -1,4 +1,5 @@
-﻿using DotNetCardsServer.Models.Cards;
+﻿using DotNetCardsServer.Interfaces;
+using DotNetCardsServer.Models.Cards;
 using DotNetCardsServer.Services.Cards;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,11 +15,11 @@ namespace DotNetCardsServer.Controllers
     [Authorize]
     public class CardsController : ControllerBase
     {
-        private readonly CardsService _cardsService;
+        private readonly ICardsService _cardsService;
 
-        public CardsController(IMongoClient mongoClient)
+        public CardsController(ICardsService cardsService)
         {
-            _cardsService = new CardsService(mongoClient);
+            _cardsService = cardsService;
         }
 
         [HttpGet]

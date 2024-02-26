@@ -1,4 +1,5 @@
 ﻿using DotNetCardsServer.Exceptions;
+using DotNetCardsServer.Interfaces;
 using DotNetCardsServer.Models.Users;
 using DotNetCardsServer.Utils;
 using MongoDB.Bson;
@@ -6,11 +7,11 @@ using MongoDB.Driver;
 
 namespace DotNetCardsServer.Services.Users
 {
-    public class UsersService
+    public class UsersServiceMongoDb : IUsersService
     {
         private  IMongoCollection<User> _users;
 
-        public UsersService(IMongoClient mongoClient) 
+        public UsersServiceMongoDb(IMongoClient mongoClient) 
         {
             var database = mongoClient.GetDatabase("dotnet_business_card_app");
             _users = database.GetCollection<User>("users");

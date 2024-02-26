@@ -1,9 +1,13 @@
 
 using DotNetCardsServer.Auth;
+using DotNetCardsServer.Interfaces;
 using DotNetCardsServer.Middlewares;
+using DotNetCardsServer.Services.Cards;
 using DotNetCardsServer.Services.Data;
+using DotNetCardsServer.Services.Users;
 using DotNetCardsServer.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -22,6 +26,9 @@ namespace DotNetCardsServer
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             builder.Services.AddSingleton(serviceProvider =>
             {
                 var configuration = serviceProvider.GetService<IConfiguration>();
@@ -60,7 +67,9 @@ namespace DotNetCardsServer
 
             });
 
-           
+            builder.Services.AddScoped<ICardsService, CardsServiceMongoDb>();
+            builder.Services.AddScoped<IUsersService, UsersServiceMongoDb>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
