@@ -1,11 +1,12 @@
 ﻿using DotNetCardsServer.Exceptions;
 using DotNetCardsServer.Models.Users;
+using DotNetCardsServer.Services.Data.Repositories.Intrefaces;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DotNetCardsServer.Services.Data.Repositories.Users
 {
-    public class UserRepositoryMongoDb
+    public class UserRepositoryMongoDb: IUserRepository
     {
         private IMongoCollection<User> _users;
 

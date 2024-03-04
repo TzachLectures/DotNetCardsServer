@@ -4,6 +4,9 @@ using DotNetCardsServer.Interfaces;
 using DotNetCardsServer.Middlewares;
 using DotNetCardsServer.Services.Cards;
 using DotNetCardsServer.Services.Data;
+using DotNetCardsServer.Services.Data.Repositories.Cards;
+using DotNetCardsServer.Services.Data.Repositories.Intrefaces;
+using DotNetCardsServer.Services.Data.Repositories.Users;
 using DotNetCardsServer.Services.Users;
 using DotNetCardsServer.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,8 +70,10 @@ namespace DotNetCardsServer
 
             });
 
-            builder.Services.AddScoped<ICardsService, CardsServiceMongoDb>();
-            builder.Services.AddScoped<IUsersService, UsersServiceEF>();
+            builder.Services.AddScoped<IUserRepository, UserRepositoryEF>();
+            builder.Services.AddScoped<ICardRepository, CardRepositoryEF>();
+            builder.Services.AddScoped<ICardsService, CardsService>();
+            builder.Services.AddScoped<IUsersService, UserService>();
 
             var app = builder.Build();
 

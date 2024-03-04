@@ -64,7 +64,8 @@ namespace DotNetCardsServer.Controllers
         public async Task<IActionResult> UpdateCard(string id, [FromBody] Card updatedCard)
         {
             bool.TryParse(HttpContext.User.FindFirstValue("isAdmin"), out bool isAdmin);
-            if (!await _cardsService.IsOwner(id, HttpContext.User.FindFirstValue("id") ?? "") && !isAdmin)
+            if (!await _cardsService.
+                (id, HttpContext.User.FindFirstValue("id") ?? "") && !isAdmin)
             {
                 return Unauthorized("You can only edit your own cards");
             }

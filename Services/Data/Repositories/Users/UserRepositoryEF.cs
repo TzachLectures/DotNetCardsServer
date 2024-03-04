@@ -1,10 +1,11 @@
 ﻿using DotNetCardsServer.Exceptions;
 using DotNetCardsServer.Models.Users;
+using DotNetCardsServer.Services.Data.Repositories.Intrefaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCardsServer.Services.Data.Repositories.Users
 {
-    public class UserRepositoryEF
+    public class UserRepositoryEF: IUserRepository
     {
         private readonly ApplicationDbContext _context;
         public UserRepositoryEF(ApplicationDbContext context)
