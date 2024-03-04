@@ -70,8 +70,8 @@ namespace DotNetCardsServer
 
             });
 
-            builder.Services.AddScoped<IUserRepository, UserRepositoryEF>();
-            builder.Services.AddScoped<ICardRepository, CardRepositoryEF>();
+            builder.Services.AddScoped<IUserRepository, UserRepositoryMongoDb>();
+            builder.Services.AddScoped<ICardRepository, CardRepositoryMongoDb>();
             builder.Services.AddScoped<ICardsService, CardsService>();
             builder.Services.AddScoped<IUsersService, UserService>();
 

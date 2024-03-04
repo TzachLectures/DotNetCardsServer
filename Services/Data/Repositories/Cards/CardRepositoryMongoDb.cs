@@ -1,10 +1,11 @@
 ﻿using DotNetCardsServer.Models.Cards;
+using DotNetCardsServer.Services.Data.Repositories.Intrefaces;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace DotNetCardsServer.Services.Data.Repositories.Cards
 {
-    public class CardRepositoryMongoDb
+    public class CardRepositoryMongoDb: ICardRepository
     {
         private IMongoCollection<Card> _cards;
 
@@ -29,18 +30,18 @@ namespace DotNetCardsServer.Services.Data.Repositories.Cards
             return await _cards.Find(_ => true).ToListAsync();
         }
         public async Task<Card> GetOneCardAsync(string cardId) {
-            var card = await _cards.Find<Card>(c => c.Id == new ObjectId(cardId)).FirstOrDefaultAsync();
+            var card = await _cards.Find<Card>(c => c.Id == (cardId)).FirstOrDefaultAsync();
             return card;
         }
         public async Task<bool> DeleteCardAsync(string cardId) {
 
-            var result = await _cards.DeleteOneAsync(c => c.Id == new ObjectId(cardId));
+            var result = await _cards.DeleteOneAsync(c => c.Id == (cardId));
             return (result.DeletedCount > 0);
             
         
         }
         public async Task<Card> EditCardAsync(string cardId, Card updatedCard) {
-            var filter = Builders<Card>.Filter.Eq(u => u.Id, new ObjectId(cardId));
+            var filter = Builders<Card>.Filter.Eq(u => u.Id, (cardId));
             var update = Builders<Card>.Update
                 .Set(c => c.Title, updatedCard.Title)
                 .Set(c => c.Subtitle, updatedCard.Subtitle)
@@ -65,14 +66,14 @@ namespace DotNetCardsServer.Services.Data.Repositories.Cards
         public async Task<bool> DeleteLike(string userId, string cardId) {
 
             var update = Builders<Card>.Update.Pull(c => c.Likes, userId);
-            var result = await _cards.UpdateOneAsync(c => c.Id == new ObjectId( cardId), update);
+            var result = await _cards.UpdateOneAsync(c => c.Id == (cardId), update);
             return (result.MatchedCount > 0);
            
         }
         public async Task<bool> AddLike(string userId, string cardId) {
 
             var update = Builders<Card>.Update.Push(c => c.Likes, userId);
-            var result = await _cards.UpdateOneAsync(c => c.Id == new ObjectId(cardId), update);
+            var result = await _cards.UpdateOneAsync(c => c.Id == (cardId), update);
             return (result.MatchedCount > 0);
         }
     }

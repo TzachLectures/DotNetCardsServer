@@ -14,7 +14,9 @@ namespace DotNetCardsServer.Services.Data.Repositories.Cards
         }
         public async Task<Card> CreateCardAsync(Card newCard)
         {
+            Console.WriteLine("test");
             var cardSqlModel = new CardSqlModel(newCard);
+
             _context.Cards.Add(cardSqlModel);
             await _context.SaveChangesAsync();
             return new Card(cardSqlModel);

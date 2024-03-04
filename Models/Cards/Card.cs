@@ -8,8 +8,8 @@ namespace DotNetCardsServer.Models.Cards
     #nullable disable
     public class Card        
     {
-       
-        public ObjectId Id { get; set; }
+
+        public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string _id => Id.ToString();
 
@@ -48,7 +48,7 @@ namespace DotNetCardsServer.Models.Cards
 
         public Card(CardSqlModel cardSqlModel, List<string> likes = null)
         {
-            Id = new ObjectId(cardSqlModel.Id);
+            Id = (cardSqlModel.Id);
             Title = cardSqlModel.Title;
             Subtitle = cardSqlModel.Subtitle;
             Description = cardSqlModel.Description;

@@ -29,7 +29,7 @@ public class UserSqlModel
 
     public UserSqlModel(User user)
     {
-        Id = user.Id.ToString();
+        
         FirstName = user.Name?.First;
         LastName = user.Name?.Last;
         MiddleName = user.Name?.Middle;

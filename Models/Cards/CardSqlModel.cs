@@ -41,7 +41,7 @@ public class CardSqlModel
 
     public CardSqlModel(Card card)
     {
-        Id = card.Id.ToString();
+        Id = Guid.NewGuid().ToString();
         Title = card.Title;
         Subtitle = card.Subtitle;
         Description = card.Description;

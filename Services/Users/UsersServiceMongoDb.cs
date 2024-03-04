@@ -71,7 +71,7 @@ namespace DotNetCardsServer.Services.Users
         public async Task<User> EditUserAsync(string userId, User updatedUser)
         {
 
-            var filter = Builders<User>.Filter.Eq(u => u.Id, new ObjectId(userId));
+            var filter = Builders<User>.Filter.Eq(u => u.Id, (userId));
 
             var update = Builders<User>.Update
                 .Set(u => u.Name, updatedUser.Name)

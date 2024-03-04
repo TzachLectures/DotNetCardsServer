@@ -5,7 +5,7 @@ namespace DotNetCardsServer.Models.Users
 {
     public class User
     {
-        public ObjectId Id { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public Name Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -20,7 +20,7 @@ namespace DotNetCardsServer.Models.Users
 
         public User(UserSqlModel userModel)
         {
-            Id = new ObjectId(userModel.Id);
+            Id = (userModel.Id);
             Name = new Name
             {
                 First = userModel.FirstName,

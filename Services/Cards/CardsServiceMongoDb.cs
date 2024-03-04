@@ -28,7 +28,7 @@ namespace DotNetCardsServer.Services.Cards
 
         public async Task<Card> GetCardByIdAsync(string cardId)
         {
-            var card = await _cards.Find<Card>(c => c.Id == new ObjectId(cardId)).FirstOrDefaultAsync();
+            var card = await _cards.Find<Card>(c => c.Id == (cardId)).FirstOrDefaultAsync();
             if (card == null)
             {
                 throw new Exception("Card not found"); 
@@ -38,7 +38,7 @@ namespace DotNetCardsServer.Services.Cards
 
         public async Task<Card> UpdateCardAsync(string cardId, Card updatedCard)
         {
-            var filter = Builders<Card>.Filter.Eq(u => u.Id, new ObjectId(cardId));
+            var filter = Builders<Card>.Filter.Eq(u => u.Id,    (cardId));
             var update = Builders<Card>.Update
                 .Set(c => c.Title, updatedCard.Title)
                 .Set(c => c.Subtitle, updatedCard.Subtitle)
@@ -58,7 +58,7 @@ namespace DotNetCardsServer.Services.Cards
         }
         public async Task DeleteCardAsync(string cardId)
         {
-            var result = await _cards.DeleteOneAsync(c => c.Id == new ObjectId(cardId));
+            var result = await _cards.DeleteOneAsync(c => c.Id == (cardId));
             if (result.DeletedCount == 0)
             {
                 throw new Exception("Card not found");
